@@ -27,9 +27,10 @@ interface LinkItem {
   method?: string
 }
 const linkList = ref([{ id: 5, label: t('common.about'), method: 'toAbout' }] as LinkItem[])
-if (!appearanceStore.getShowAbout) {
-  linkList.value.splice(0, 1)
-}
+// if (!appearanceStore.getShowAbout) {
+//   linkList.value.splice(0, 1)
+// }
+linkList.value.splice(0, 1)
 
 const inPlatformClient = computed(() => !!wsCache.get('de-platform-client'))
 
@@ -203,7 +204,7 @@ if (uid.value === '1') {
   overflow: hidden;
   cursor: pointer;
   &:hover {
-    background-color: #1e2738;
+    background-color: var(--ed-color-primary-light-3);
   }
   .main-color {
     background: var(--ed-color-primary);

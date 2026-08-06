@@ -1,0 +1,11 @@
+/* 覆盖 NProgress 默认颜色 #29d → 暖橙 #ff6b35，与主色 #2a8b92 形成高对比度 */
+#nprogress .bar {
+  background: #ff6b35 !important;
+}
+#nprogress .peg {
+  box-shadow: 0 0 10px #ff6b35, 0 0 5px #ff6b35 !important;
+}
+#nprogress .spinner-icon {
+  border-top-color: #ff6b35 !important;
+  border-left-color: #ff6b35 !important;
+}

@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import logo from '@/assets/svg/logo.svg'
 import logo_sqlbot from '@/assets/svg/logo_sqlbot.svg'
 import msgNotice from '@/assets/svg/icon_notification_outlined.svg'
 import dvAi from '@/assets/svg/dv-ai.svg'
@@ -137,9 +136,14 @@ onMounted(() => {
 <template>
   <el-header class="header-flex" :class="{ 'header-light': navigateBg === 'light' }">
     <img class="logo" v-if="navigate" :src="navigate" alt="" />
-    <Icon v-else
-      ><logo @click="handleIconClick" class="svg-icon logo" style="cursor: pointer"
-    /></Icon>
+    <img
+      v-else
+      src="/sengee.png"
+      class="logo"
+      style="cursor: pointer"
+      @click="handleIconClick"
+      alt="logo"
+    />
     <el-menu
       :default-active="activeIndex"
       mode="horizontal"
@@ -156,7 +160,7 @@ onMounted(() => {
           <Icon name="copilot"><logo_sqlbot @click="handleSQLBotClick" class="svg-icon" /></Icon>
         </el-icon>
       </el-tooltip>
-      <el-tooltip offset="10" effect="dark" :content="t('commons.assistant')" placement="bottom">
+      <!-- <el-tooltip offset="10" effect="dark" :content="t('commons.assistant')" placement="bottom">
         <el-icon
           style="margin: 0 10px"
           class="ai-icon"
@@ -164,7 +168,7 @@ onMounted(() => {
         >
           <Icon name="dv-ai"><dvAi @click="handleAiClick" class="svg-icon" /></Icon>
         </el-icon>
-      </el-tooltip>
+      </el-tooltip> -->
       <el-tooltip
         offset="10"
         effect="dark"
@@ -187,7 +191,7 @@ onMounted(() => {
         class="ai-icon-tips"
       />
       <ToolboxCfg v-if="showToolbox" />
-      <TopDoc v-if="appearanceStore.getShowDoc" />
+      <!-- <TopDoc v-if="appearanceStore.getShowDoc" /> -->
       <el-tooltip
         v-if="showMsg"
         effect="dark"
@@ -243,11 +247,11 @@ onMounted(() => {
   overflow: hidden;
   cursor: pointer;
   &:hover {
-    background-color: #1e2738;
+    background-color: var(--ed-color-primary-light-3);
   }
   &.is-light-setting {
     &:hover {
-      background-color: #1f23291a !important;
+      background-color: var(--ed-color-primary-light-3) !important;
     }
   }
 }
@@ -266,8 +270,8 @@ onMounted(() => {
   margin-bottom: 0.5px;
   display: flex;
   align-items: center;
-  height: 56px;
-  background-color: #050e21;
+  height: 32px;
+  background-color: var(--ed-color-primary);
   padding: 0 24px;
   .operate-setting {
     margin-left: auto;
@@ -293,8 +297,8 @@ onMounted(() => {
 }
 
 .logo {
-  width: 134px;
-  height: 34px;
+  // width: 134px;
+  height: 22px;
   margin-right: 48px;
   color: #ffffff;
 }
@@ -306,7 +310,7 @@ onMounted(() => {
     .ed-icon {
       cursor: pointer;
       color: rgba(255, 255, 255, 0.8);
-      font-size: 20px;
+      font-size: 18px;
     }
   }
 }
@@ -319,7 +323,7 @@ onMounted(() => {
 }
 
 .ai-icon {
-  font-size: 24px !important;
+  font-size: 22px !important;
 }
 
 .ai-icon-tips,

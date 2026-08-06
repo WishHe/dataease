@@ -52,7 +52,7 @@ const redirectUser = () => {
   align-items: center;
   justify-content: center;
   &:hover {
-    background-color: #1e2738;
+    background-color: var(--ed-color-primary-light-3);
   }
 }
 .in-iframe-setting {

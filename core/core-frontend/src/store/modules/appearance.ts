@@ -359,7 +359,7 @@ const setLinkIcon = (linkWeb?: string) => {
     if (linkWeb) {
       link['href'] = baseUrl + linkWeb
     } else {
-      link['href'] = '/dataease.svg'
+      link['href'] = '/favicon.ico'
     }
   }
 }

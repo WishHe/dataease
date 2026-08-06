@@ -13,8 +13,8 @@ const crypt = new JSEncrypt()
 
 const aesDecrypt = (word, keyStr) => {
   const keyHex = CryptoJS.enc.Utf8.parse(keyStr)
-  const ivWordArray = CryptoJS.SHA256(keyStr)
-  const ivHex = CryptoJS.lib.WordArray.create(ivWordArray.words.slice(0, 4))
+  // 硬编码 IV "0000000000000000"，与后端 RsaUtils.ascEncrypt 中的 IV_KEY 保持一致
+  const ivHex = CryptoJS.enc.Utf8.parse('0000000000000000')
   const decrypt = CryptoJS.AES.decrypt(word, keyHex, {
     iv: ivHex,
     mode: CryptoJS.mode.CBC,
@@ -35,10 +35,9 @@ export const rsaEncryp = word => {
 }
 
 export const symmetricDecrypt = (data, keyStr) => {
-  const combined = CryptoJS.enc.Base64.parse(data)
-  const combinedHex = CryptoJS.enc.Hex.parse(combined.toString(CryptoJS.enc.Hex))
-  const iv = CryptoJS.lib.WordArray.create(combinedHex.words.slice(0, 4))
-  const cipherHex = CryptoJS.lib.WordArray.create(combinedHex.words.slice(4))
+  const cipherHex = CryptoJS.enc.Base64.parse(data)
+  // 旧后端不预置 IV，使用硬编码 IV "0000000000000000" 解密
+  const iv = CryptoJS.enc.Utf8.parse('0000000000000000')
   const key = CryptoJS.enc.Base64.parse(keyStr)
   const decrypted = CryptoJS.AES.decrypt({ ciphertext: cipherHex }, key, {
     iv: iv,

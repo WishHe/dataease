@@ -1,9 +1,7 @@
 <script lang="ts" setup>
-import DataEase from '@/assets/svg/DataEase.svg'
-import { ref, reactive, onMounted, computed, nextTick } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import { useI18n } from '@/hooks/web/useI18n'
 import { FormRules, FormInstance } from 'element-plus-secondary'
-import { Icon } from '@/components/icon-custom'
 import { loginApi, queryDekey } from '@/api/login'
 import { useCache } from '@/hooks/web/useCache'
 import { useAppStoreWithOut } from '@/store/modules/app'
@@ -15,8 +13,6 @@ import router from '@/router'
 import { ElMessage } from 'element-plus-secondary'
 import { XpackComponent } from '@/components/plugin'
 import { logoutHandler } from '@/utils/logout'
-import DeImage from '@/assets/login-desc-de.png'
-import elementResizeDetectorMaker from 'element-resize-detector'
 import { cleanPlatformFlag } from '@/utils/utils'
 import xss from 'xss'
 const { wsCache } = useCache()
@@ -31,7 +27,6 @@ const showFoot = ref(false)
 const showSlogan = ref(true)
 const loginLogoUrl = ref(null)
 const msg = ref(null)
-const loginImageUrl = ref(null)
 const slogan = ref(null)
 const footContent = ref(null)
 const loginErrorMsg = ref('')
@@ -135,10 +130,6 @@ const invalidPwdCb = cbParam => {
 const xpackLoadFail = ref(false)
 const loadingText = ref('加载中...')
 const loginContainer = ref()
-const loginContainerWidth = ref(0)
-const showLoginImage = computed<boolean>(() => {
-  return !(loginContainerWidth.value < 889)
-})
 
 const preheat = ref(true)
 const showLoginErrorMsg = () => {
@@ -174,9 +165,6 @@ const showLoginErrorMsg = () => {
 
 const loadArrearance = () => {
   showDempTips.value = appearanceStore.getShowDemoTips
-  if (appearanceStore.getBg) {
-    loginImageUrl.value = appearanceStore.getBg
-  }
   if (appearanceStore.getLogin) {
     loginLogoUrl.value = appearanceStore.getLogin
   }
@@ -247,12 +235,6 @@ onMounted(async () => {
       wsCache.set(appStore.getDekey, res.data)
     })
   }
-  const erd = elementResizeDetectorMaker()
-  erd.listenTo(loginContainer.value, () => {
-    nextTick(() => {
-      loginContainerWidth.value = loginContainer.value?.offsetWidth
-    })
-  })
 })
 </script>
 
@@ -267,14 +249,6 @@ onMounted(async () => {
   />
   <div v-show="contentShow" class="login-background" v-loading="duringLogin">
     <div class="login-container" ref="loginContainer">
-      <div class="login-image-content" v-loading="!axiosFinished" v-if="showLoginImage">
-        <el-image
-          v-if="axiosFinished"
-          class="login-image"
-          fit="cover"
-          :src="loginImageUrl || DeImage"
-        />
-      </div>
       <div class="login-form-content" v-loading="loading">
         <div class="login-form-center">
           <el-form
@@ -285,19 +259,18 @@ onMounted(async () => {
             :disabled="preheat"
           >
             <div class="login-logo">
-              <Icon
+              <img
                 v-if="!loginLogoUrl && axiosFinished"
-                className="login-logo-icon"
-                name="DataEase"
-              >
-                <DataEase class="login-logo-icon" />
-              </Icon>
+                src="/sengee-login.svg"
+                class="login-logo-icon"
+                alt="logo"
+              />
               <img v-if="loginLogoUrl && axiosFinished" :src="loginLogoUrl" alt="" />
             </div>
-            <div v-if="showSlogan" class="login-welcome">
+            <!-- <div v-if="showSlogan" class="login-welcome">
               {{ slogan || t('system.available_to_everyone') }}
-            </div>
-            <div class="login-form border-radius-12">
+            </div> -->
+            <div class="login-form">
               <div
                 class="default-login-tabs"
                 v-if="activeName === 'simple' || activeName === 'ldap'"
@@ -365,6 +338,9 @@ onMounted(async () => {
         </div>
         <div v-if="showFoot" class="dynamic-login-foot" v-html="footContent" />
       </div>
+      <div class="login-footer">
+        Copyright &copy; {{ new Date().getFullYear() }} DataYoo. All Rights Reserved.
+      </div>
     </div>
   </div>
 </template>
@@ -376,48 +352,82 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #000;
+  background: var(--ed-color-primary);
   position: absolute;
   z-index: 100;
 }
 .login-background {
-  background-color: #f5f7fa;
   height: 100vh;
   width: 100vw;
+  // background: linear-gradient(135deg, #eaf3f4 0%, #d5e8ea 30%, #f0f4f5 60%, #e8edf0 100%);
+  background: url(/login-bg.svg) no-repeat 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -180px;
+    right: -120px;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(42, 139, 146, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -200px;
+    left: -100px;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(42, 139, 146, 0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
 }
 
 .login-container {
   width: 100%;
   height: 100%;
-  background-color: var(--ContentBG, #ffffff);
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  // justify-content: center;
+  position: relative;
+  z-index: 1;
+  padding-top: 110px;
+
   .login-image-content {
-    overflow: hidden;
-    height: 100%;
-    width: 40%;
-    min-width: 400px;
+    display: none;
   }
 
   .login-form-content {
-    position: relative;
-    flex: 1;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    width: 100%;
 
     .login-form-center {
-      width: 480px;
+      width: 420px;
+      padding: 48px 40px;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0px 8px 32px rgba(31, 35, 41, 0.06);
     }
   }
+
   .login-logo {
     text-align: center;
+    margin-bottom: 24px;
     img {
+      height: 36px;
       width: auto;
-      max-height: 52px;
-      @media only screen and (max-width: 1280px) {
-        width: auto;
-        max-height: 52px;
-      }
     }
   }
 
@@ -446,7 +456,7 @@ onMounted(async () => {
 
   .login-welcome {
     text-align: center;
-    margin-top: 8px;
+    margin-top: 4px;
     color: #646a73;
     font-family: var(--de-custom_font, 'PingFang');
     font-size: 14px;
@@ -470,12 +480,8 @@ onMounted(async () => {
   }
 
   .login-form {
-    margin-top: 40px;
-    padding: 40px;
-    padding-top: 20px;
-    box-shadow: 0px 6px 24px rgba(31, 35, 41, 0.08);
-    border: 1px solid #dee0e3;
-    border-radius: 6px;
+    margin-top: 28px;
+    padding: 0;
 
     .login-input-module {
       width: 100%;
@@ -485,24 +491,26 @@ onMounted(async () => {
       }
       :deep(.ed-input__wrapper) {
         padding: 1px 12px;
+        border-radius: 6px;
       }
     }
 
     .login-form-item {
-      margin-top: 24px;
+      margin-top: 20px;
     }
 
     .ed-form-item--default {
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
+
     .login-form-title {
-      margin-top: 20px;
+      margin-bottom: 4px;
       color: #1f2329;
       font-family: var(--de-custom_font, 'PingFang');
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 500;
-      line-height: 28px;
-      text-align: left;
+      line-height: 26px;
+      text-align: center;
     }
   }
 
@@ -518,37 +526,44 @@ onMounted(async () => {
 
   .login-btn {
     position: relative;
-    margin-bottom: 120px;
+    margin-top: 24px;
     .submit {
       width: 100%;
       height: 40px;
       line-height: 40px;
+      border-radius: 6px;
     }
   }
 
   .login-msg {
-    margin-top: 10px;
-    padding: 0 40px;
+    margin-top: 12px;
     color: #f56c6c;
     text-align: center;
+    font-size: 13px;
   }
 
   .login-image {
-    //object-fit: cover;
-    //background: url(../../assets/login-desc-de.png);
-    background-size: 100% 100%;
-    width: 100%;
-    height: 100%;
+    display: none;
   }
+
   .login-image-de {
-    background-size: cover;
-    width: 100%;
-    height: 520px;
-    @media only screen and (max-width: 1280px) {
-      height: 380px;
-    }
+    display: none;
   }
 }
+
+.login-footer {
+  position: absolute;
+  bottom: 28px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: #8f959e;
+  font-family: var(--de-custom_font, 'PingFang');
+  font-size: 13px;
+  line-height: 20px;
+  z-index: 1;
+}
+
 .dynamic-login-foot {
   visibility: visible;
   width: 100%;
@@ -565,5 +580,13 @@ onMounted(async () => {
 .login-logo-icon {
   width: auto;
   height: 52px;
+}
+
+// 响应式: 窄屏时缩小表单宽度
+@media only screen and (max-width: 480px) {
+  .login-container .login-form-content .login-form-center {
+    width: 92vw;
+    padding: 32px 24px;
+  }
 }
 </style>

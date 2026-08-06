@@ -13,6 +13,19 @@
   --ed-border-color-light: #dee0e3 !important;
   --ed-border-color-lighter: #dee0e3 !important;
   --ed-popover-border-radius: 6px !important;
+  // 主色覆盖: #2a8b92（青绿色）
+  --ed-color-primary: #2a8b92 !important;
+  --ed-color-primary-light-3: #4a9ca2 !important;
+  --ed-color-primary-light-5: #7fb9be !important;
+  --ed-color-primary_b50: #eaf3f4 !important;
+  --ed-color-primary-dark-2: #24767c !important;
+  --ed-color-primary-dark-20: #226f75 !important;
+  --ed-color-primary-1a: #2a8b921a !important;
+  --ed-color-primary-33: #2a8b9233 !important;
+  --ed-color-primary-99: #2a8b9299 !important;
+  --van-blue: #2a8b92 !important;
+  --ed-menu-horizontal-height: 32px;
+  --ed-menu-item-height: 32px;
 }
 
 body {
@@ -753,6 +766,10 @@ strong {
 
 .ed-menu--vertical.ed-menu--light .ed-menu-item.is-active.is-active.is-active {
   background-color: var(--ed-color-primary-1a, #3370ff1a) !important;
+}
+.ed-menu--horizontal>.ed-menu-item.is-active.is-active.is-active,
+.ed-menu--horizontal>.ed-sub-menu.is-active.is-active .ed-sub-menu__title {
+  background-color: var(--ed-color-primary-light-3) !important;
 }
 
 .utree-popover {

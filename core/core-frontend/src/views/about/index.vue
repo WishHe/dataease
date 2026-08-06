@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import logo from '@/assets/svg/logo.svg'
 import aboutBg from '@/assets/img/about-bg.png'
 import { ref, reactive, onMounted } from 'vue'
 import { useUserStoreWithOut } from '@/store/modules/user'
@@ -164,7 +163,7 @@ const update = (licKey: string) => {
     <img width="792" height="180" :src="aboutBg" />
     <div class="color-overlay"></div>
     <el-icon class="logo">
-      <icon name="logo"><logo class="svg-icon" /></icon>
+      <img src="/sengee.png" alt="logo" style="width: 48px; height: 48px" />
     </el-icon>
     <div class="content">
       <div class="item">

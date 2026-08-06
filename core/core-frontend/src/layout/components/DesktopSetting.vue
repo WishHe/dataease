@@ -152,7 +152,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   &:hover {
-    background-color: #1e2738;
+    background-color: var(--ed-color-primary-light-3);
   }
 }
 .in-iframe-setting {
@@ -171,11 +171,11 @@ onMounted(() => {
   overflow: hidden;
   cursor: pointer;
   &:hover {
-    background-color: #1e2738;
+    background-color: var(--ed-color-primary-light-3);
   }
   &.is-light-setting {
     &:hover {
-      background-color: #1f23291a !important;
+      background-color: var(--ed-color-primary-light-3) !important;
     }
   }
 }

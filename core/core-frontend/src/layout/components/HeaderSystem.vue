@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import logo from '@/assets/svg/logo.svg'
 import icon_left_outlined from '@/assets/svg/icon_left_outlined.svg'
 import { computed } from 'vue'
 import { ElHeader } from 'element-plus-secondary'
@@ -31,9 +30,7 @@ const navigate = computed(() => appearanceStore.getNavigate)
     :class="{ 'header-light': navigateBg && navigateBg === 'light' }"
   >
     <img class="logo" v-if="navigate" :src="navigate" alt="" />
-    <Icon class="de-logo" v-else className="logo" name="logo">
-      <logo class="svg-icon logo de-logo" />
-    </Icon>
+    <img v-else src="/sengee.png" class="logo de-logo" alt="logo" />
     <el-divider direction="vertical" />
     <span class="system">{{ title || t('commons.system_setting') }}</span>
     <div class="operate-setting">
@@ -54,8 +51,8 @@ const navigate = computed(() => appearanceStore.getNavigate)
   font-family: var(--de-custom_font, 'PingFang');
 
   .logo {
-    width: 134px;
-    height: 34px;
+    // width: 134px;
+    height: 22px;
   }
 
   .de-logo {
@@ -113,8 +110,8 @@ const navigate = computed(() => appearanceStore.getNavigate)
   margin-bottom: 0.5px;
   display: flex;
   align-items: center;
-  height: 56px;
-  background-color: #050e21;
+  height: 32px;
+  background-color: var(--ed-color-primary);
   padding: 0 24px;
   .operate-setting {
     margin-left: auto;
@@ -133,7 +130,7 @@ const navigate = computed(() => appearanceStore.getNavigate)
     .ed-icon {
       cursor: pointer;
       color: rgba(255, 255, 255, 0.8);
-      font-size: 20px;
+      font-size: 18px;
     }
   }
 }
