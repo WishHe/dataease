@@ -47,6 +47,7 @@ const iconChartMapEmpty = {
   'icon_symmetric-bar_light': 'bidirectional-bar-dark',
   icon_waterfall_light: 'waterfall-dark',
   icon_waterwave_light: 'liquid-dark',
+  'icon_graph-cartesian_light': 'graph-cartesian-dark',
   'icon_word-cloud_light': 'word-cloud-dark'
 }
 const iconChartDarkMap = {

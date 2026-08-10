@@ -30,7 +30,7 @@ const navigate = computed(() => appearanceStore.getNavigate)
     :class="{ 'header-light': navigateBg && navigateBg === 'light' }"
   >
     <img class="logo" v-if="navigate" :src="navigate" alt="" />
-    <img v-else src="/sengee.png" class="logo de-logo" alt="logo" />
+    <img v-else src="/zoogen.svg" class="logo de-logo" alt="logo" />
     <el-divider direction="vertical" />
     <span class="system">{{ title || t('commons.system_setting') }}</span>
     <div class="operate-setting">

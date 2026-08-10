@@ -1508,6 +1508,7 @@ export default {
     chart_pie_donut_rose: 'Rose ring chart',
     chart_funnel: 'Funnel chart',
     chart_sankey: 'Sankey chart',
+    chart_graph_cartesian: 'Graph on Cartesian',
     chart_radar: 'Radar chart',
     chart_gauge: 'Dashboard',
     chart_map: 'Map',

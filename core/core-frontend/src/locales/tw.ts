@@ -1469,6 +1469,7 @@ export default {
     chart_pie_donut_rose: '玫瑰環形圖',
     chart_funnel: '漏斗圖',
     chart_sankey: '桑基圖',
+    chart_graph_cartesian: '笛卡爾關係圖',
     chart_radar: '雷達圖',
     chart_gauge: '儀錶板',
     chart_map: '地圖',

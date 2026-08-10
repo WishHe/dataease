@@ -261,7 +261,7 @@ onMounted(async () => {
             <div class="login-logo">
               <img
                 v-if="!loginLogoUrl && axiosFinished"
-                src="/sengee-login.svg"
+                src="/zoogen-login.svg"
                 class="login-logo-icon"
                 alt="logo"
               />

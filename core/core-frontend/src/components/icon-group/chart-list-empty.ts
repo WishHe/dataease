@@ -50,6 +50,7 @@ const iconChartMapEmpty = {
   'icon_symmetric-bar_light': 'bidirectional-bar',
   icon_waterfall_light: 'waterfall',
   icon_waterwave_light: 'liquid',
+  'icon_graph-cartesian_light': 'graph-cartesian',
   'icon_word-cloud_light': 'word-cloud'
 }
 const iconChartMap = {

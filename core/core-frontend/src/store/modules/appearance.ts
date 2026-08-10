@@ -252,7 +252,7 @@ export const useAppearanceStore = defineStore('appearanceStore', {
       const resData = res.data
       if (!resData?.length) {
         if (!isDataEaseBi) {
-          document.title = 'DataEase'
+          document.title = 'Zoogen'
           setLinkIcon()
         }
         return
@@ -272,6 +272,7 @@ export const useAppearanceStore = defineStore('appearanceStore', {
         this.demoTipsContent = data.demoTipsContent
         this.loaded = true
         setLinkIcon()
+        setTitle('Zoogen')
         return
       }
       this.navigate = data.navigate
@@ -345,8 +346,8 @@ export const useAppearanceStore = defineStore('appearanceStore', {
         document.title = this.name
         setTitle(this.name)
       } else {
-        document.title = 'DataEase'
-        setTitle('DataEase')
+        document.title = 'Zoogen'
+        setTitle('Zoogen')
       }
       setLinkIcon(this.web)
     }

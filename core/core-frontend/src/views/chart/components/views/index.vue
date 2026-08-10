@@ -6,6 +6,7 @@ import { cancelRequestBatch } from '@/config/axios/service'
 import icon_drilling_outlined from '@/assets/svg/icon_drilling_outlined.svg'
 import { useI18n } from '@/hooks/web/useI18n'
 import ChartComponentG2Plot from './components/ChartComponentG2Plot.vue'
+import ChartComponentECharts from './components/ChartComponentECharts.vue'
 import DeIndicator from '@/custom-component/indicator/DeIndicator.vue'
 import { useAppearanceStoreWithOut } from '@/store/modules/appearance'
 import { useAppStoreWithOut } from '@/store/modules/app'
@@ -1331,6 +1332,22 @@ const clearG2Tooltip = () => {
         v-else-if="
           showChartView(ChartLibraryType.G2_PLOT, ChartLibraryType.L7_PLOT, ChartLibraryType.L7)
         "
+        ref="chartComponent"
+        @onChartClick="chartClick"
+        @onPointClick="onPointClick"
+        @onDrillFilters="onDrillFilters"
+        @onJumpClick="jumpClick"
+        @resetLoading="() => (loading = false)"
+      />
+      <ChartComponentECharts
+        :scale="scale"
+        :view="view"
+        :show-position="showPosition"
+        :element="element"
+        :suffixId="suffixId"
+        :font-family="fontFamily"
+        :active="active"
+        v-else-if="showChartView(ChartLibraryType.ECHARTS)"
         ref="chartComponent"
         @onChartClick="chartClick"
         @onPointClick="onPointClick"

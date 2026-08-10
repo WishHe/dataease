@@ -1623,6 +1623,13 @@ export const CHART_TYPE_CONFIGS = [
         value: 'multi-scatter',
         title: '多维散点图',
         icon: 'multi-scatter'
+      },
+      {
+        render: 'echarts',
+        category: 'relation',
+        value: 'graph-cartesian',
+        title: t('chart.chart_graph_cartesian'),
+        icon: 'graph-cartesian'
       }
     ]
   },

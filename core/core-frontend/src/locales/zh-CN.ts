@@ -1472,6 +1472,7 @@ export default {
     chart_pie_donut_rose: '玫瑰环形图',
     chart_funnel: '漏斗图',
     chart_sankey: '桑基图',
+    chart_graph_cartesian: '笛卡尔关系图',
     chart_radar: '雷达图',
     chart_gauge: '仪表盘',
     chart_map: '地图',

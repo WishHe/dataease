@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>笛卡尔关系图 - 独立测试</title>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  <style>
+    html, body { margin: 0; height: 100%; font-family: sans-serif; }
+    #chart { width: 100%; height: 70%; }
+    #log { padding: 12px; background: #1e1e1e; color: #0f0; font-size: 12px; max-height: 30%; overflow: auto; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <div id="chart"></div>
+  <div id="log"></div>
+  <script>
+    const logEl = document.getElementById('log');
+    function log(msg) { logEl.textContent += msg + '\n'; }
+
+    // ===== 模拟 DataEase 返回的 getData 格式 =====
+    const fakeApiResponse = {
+      data: [
+        {
+          field: 'f_x_id',
+          category: '2026-08-01',
+          value: 400,
+          dimensionList: [
+            { id: 'f_x_id',   name: '时间', value: '2026-08-01' },
+            { id: 'f_src_id', name: '源',  value: '下单' },
+            { id: 'f_tgt_id', name: '目的', value: '支付' }
+          ],
+          quotaList: [
+            { id: 'f_y_id',  name: '指标' },
+            { id: 'f_sz_id', name: '节点大小', value: 40 },
+            { id: 'f_lw_id', name: '连线粗细', value: 320 }
+          ]
+        },
+        {
+          field: 'f_x_id',
+          category: '2026-08-02',
+          value: 900,
+          dimensionList: [
+            { id: 'f_x_id',   value: '2026-08-02' },
+            { id: 'f_src_id', value: '支付' },
+            { id: 'f_tgt_id', value: '发货' }
+          ],
+          quotaList: [
+            { id: 'f_y_id' },
+            { id: 'f_sz_id', value: 48 },
+            { id: 'f_lw_id', value: 280 }
+          ]
+        },
+        {
+          field: 'f_x_id',
+          category: '2026-08-03',
+          value: 1500,
+          dimensionList: [
+            { id: 'f_x_id',   value: '2026-08-03' },
+            { id: 'f_src_id', value: '发货' },
+            { id: 'f_tgt_id', value: '签收' }
+          ],
+          quotaList: [
+            { id: 'f_y_id' },
+            { id: 'f_sz_id', value: 52 },
+            { id: 'f_lw_id', value: 210 }
+          ]
+        },
+        {
+          field: 'f_x_id',
+          category: '2026-08-04',
+          value: 1100,
+          dimensionList: [
+            { id: 'f_x_id',   value: '2026-08-04' },
+            { id: 'f_src_id', value: '签收' },
+            { id: 'f_tgt_id', value: '完成' }
+          ],
+          quotaList: [
+            { id: 'f_y_id' },
+            { id: 'f_sz_id', value: 44 },
+            { id: 'f_lw_id', value: 180 }
+          ]
+        },
+        {
+          field: 'f_x_id',
+          category: '2026-08-05',
+          value: 1600,
+          dimensionList: [
+            { id: 'f_x_id',   value: '2026-08-05' },
+            { id: 'f_src_id', value: '完成' },
+            { id: 'f_tgt_id', value: null }
+          ],
+          quotaList: [
+            { id: 'f_y_id' },
+            { id: 'f_sz_id', value: 56 },
+            { id: 'f_lw_id', value: null }
+          ]
+        }
+      ]
+    };
+
+    // ===== 完全复用 graph-cartesian.ts 的数据转换逻辑 =====
+    const data = fakeApiResponse.data;
+    const nodeSizeFieldId = 'f_sz_id';
+    const linkWidthFieldId = 'f_lw_id';
+
+    // 1. 构建节点（以源为主键）
+    const nodeMap = new Map();
+    const xCategories = [];
+    const categorySet = new Set();
+
+    data.forEach(row => {
+      const dimList = row.dimensionList;
+      if (!dimList || dimList.length < 2) return;
+      const xVal = dimList[0]?.value;
+      const source = dimList[1]?.value;
+      if (source == null || source === '') return;
+
+      if (!nodeMap.has(source)) {
+        let nodeSize;
+        if (nodeSizeFieldId && row.quotaList) {
+          const found = row.quotaList.find(q => q.id === nodeSizeFieldId);
+          if (found && typeof found.value === 'number') nodeSize = found.value;
+        }
+        nodeMap.set(source, {
+          id: source, name: source, x: xVal, y: row.value ?? 0,
+          symbolSize: nodeSize ?? 40,
+          dimensionList: row.dimensionList, quotaList: row.quotaList
+        });
+        if (xVal != null && !categorySet.has(String(xVal))) {
+          categorySet.add(String(xVal));
+          xCategories.push(String(xVal));
+        }
+      }
+    });
+
+    const nodes = Array.from(nodeMap.values());
+    log('节点: ' + JSON.stringify(nodes.map(n => ({ id: n.id, x: n.x, y: n.y, size: n.symbolSize })), null, 2));
+
+    // 2. 构建边（target 为 null 的不生成边）
+    const linkWidths = [];
+    const edgeRows = [];
+    data.forEach(row => {
+      const dimList = row.dimensionList;
+      if (!dimList || dimList.length < 3) return;
+      const source = dimList[1]?.value;
+      const target = dimList[2]?.value;
+      if (target == null || target === '' || source === target) return;
+      if (source == null || source === '') return;
+
+      let linkWidth;
+      if (linkWidthFieldId && row.quotaList) {
+        const found = row.quotaList.find(q => q.id === linkWidthFieldId);
+        if (found && typeof found.value === 'number') { linkWidth = found.value; linkWidths.push(linkWidth); }
+      }
+      edgeRows.push({ source: String(source), target: String(target), linkWidth });
+    });
+
+    const minW = linkWidths.length ? Math.min(...linkWidths) : 0;
+    const maxW = linkWidths.length ? Math.max(...linkWidths) : 0;
+    function scaleWidth(v) {
+      if (v == null) return 2;
+      if (maxW === minW) return 4;
+      return 2 + ((v - minW) / (maxW - minW)) * 8;
+    }
+
+    const links = edgeRows.map(e => ({
+      source: e.source, target: e.target, value: e.linkWidth,
+      lineStyle: { width: scaleWidth(e.linkWidth), color: '#2f4554' }
+    }));
+    log('边: ' + JSON.stringify(links.map(l => ({ source: l.source, target: l.target, width: l.lineStyle.width })), null, 2));
+
+    // 3. 渲染
+    const chart = echarts.init(document.getElementById('chart'));
+    chart.setOption({
+      title: { text: '笛卡尔关系图 - 独立测试' },
+      tooltip: { formatter(p) {
+        if (p.dataType === 'edge') return `${p.data.source} → ${p.data.target}`;
+        return `${p.data.name}<br/>值: ${p.data.y}`;
+      }},
+      xAxis: { type: 'category', data: xCategories },
+      yAxis: { type: 'value' },
+      series: [{
+        type: 'graph', layout: 'none', coordinateSystem: 'cartesian2d',
+        label: { show: true },
+        edgeSymbol: ['circle', 'arrow'], edgeSymbolSize: [4, 10],
+        data: nodes.map(n => ({ id: n.id, name: n.name, x: n.x, y: n.y, value: [n.x, n.y], symbolSize: n.symbolSize })),
+        links: links
+      }]
+    });
+    log('✅ 渲染完成');
+    window.addEventListener('resize', () => chart.resize());
+  </script>
+</body>
+</html>

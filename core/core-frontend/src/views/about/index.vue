@@ -163,7 +163,7 @@ const update = (licKey: string) => {
     <img width="792" height="180" :src="aboutBg" />
     <div class="color-overlay"></div>
     <el-icon class="logo">
-      <img src="/sengee.png" alt="logo" style="width: 48px; height: 48px" />
+      <img src="/zoogen.svg" alt="logo" style="width: 48px; height: 48px" />
     </el-icon>
     <div class="content">
       <div class="item">

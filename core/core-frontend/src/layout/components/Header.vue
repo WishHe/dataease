@@ -138,7 +138,7 @@ onMounted(() => {
     <img class="logo" v-if="navigate" :src="navigate" alt="" />
     <img
       v-else
-      src="/sengee.png"
+      src="/zoogen.svg"
       class="logo"
       style="cursor: pointer"
       @click="handleIconClick"

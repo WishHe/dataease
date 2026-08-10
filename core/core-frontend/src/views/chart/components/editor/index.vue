@@ -937,6 +937,10 @@ const addExtBubble = e => {
   addAxis(e, 'extBubble')
 }
 
+const addExtLabel = e => {
+  addAxis(e, 'extLabel')
+}
+
 const addDrill = e => {
   recordSnapshotInfo('calcData')
   dragCheckType(view.value.drillFields, 'd')
@@ -1362,6 +1366,7 @@ const removeItems = (
     | 'yAxis'
     | 'yAxisExt'
     | 'extBubble'
+    | 'extLabel'
     | 'customFilter'
     | 'drillFields'
     | 'flowMapStartName'
@@ -1388,6 +1393,9 @@ const removeItems = (
       break
     case 'extBubble':
       axis = view.value.extBubble?.splice(0)
+      break
+    case 'extLabel':
+      axis = view.value.extLabel?.splice(0)
       break
     case 'customFilter':
       view.value.customFilter = {}
@@ -1479,7 +1487,6 @@ const saveRename = ref => {
     }
   })
 }
-
 const showQuotaEditFilter = item => {
   recordSnapshotInfo('calcData')
   state.quotaItem = JSON.parse(JSON.stringify(item))
@@ -1516,7 +1523,6 @@ const changeFilterData = customFilter => {
   view.value.customFilter = cloneDeep(customFilter)
 }
 const filterTree = ref()
-
 const openTreeFilter = () => {
   filterTree.value.init(cloneDeep(view.value.customFilter))
 }
@@ -1551,7 +1557,6 @@ const saveResultFilter = () => {
   view.value.customFilter[state.filterItem.index].enumCheckField = state.filterItem.enumCheckField
   closeResultFilter()
 }
-
 const collapseChange = type => {
   canvasCollapse.value[type] = !canvasCollapse.value[type]
 }
@@ -1608,17 +1613,14 @@ const editDs = () => {
     initOpenHandler(newWindow)
   }
 }
-
 const showQuotaEditCompare = item => {
   recordSnapshotInfo('calcData')
   state.quotaItemCompare = JSON.parse(JSON.stringify(item))
   state.showEditQuotaCompare = true
 }
-
 const closeQuotaEditCompare = () => {
   state.showEditQuotaCompare = false
 }
-
 const saveQuotaEditCompare = () => {
   // 更新指标
   if (state.quotaItemCompare.calcType === 'quota') {
@@ -1696,13 +1698,11 @@ const saveValueFormatter = () => {
   }
   closeValueFormatter()
 }
-
 const elRowStyle = computed(() => {
   return {
     height: embeddedStore.getToken ? 'calc(100% - 45px)' : 'calc(100vh - 110px)'
   }
 })
-
 const addCalcField = groupType => {
   editCalcField.value = true
   isCalcFieldAdd.value = true
@@ -1737,7 +1737,6 @@ const confirmEditCalc = () => {
     closeEditCalc()
   })
 }
-
 const getIconName = (deType, extField, dimension = false) => {
   if (extField === 2) {
     const iconFieldCalculated = dimension ? iconFieldCalculatedMap : iconFieldCalculatedQMap
@@ -1745,7 +1744,6 @@ const getIconName = (deType, extField, dimension = false) => {
   }
   return iconFieldMap[fieldType[deType]]
 }
-
 const chartFieldEdit = param => {
   state.currEditField = JSON.parse(JSON.stringify(param.item))
   switch (param.type) {
@@ -1755,7 +1753,6 @@ const chartFieldEdit = param => {
       state.currEditField.originName =
         param.item.extField === 2 ? param.item.originName : '[' + param.item.id + ']'
       state.currEditField.name = getFieldName(state.dimension.concat(state.quota), param.item.name)
-
       saveField(state.currEditField).then(() => {
         getFields(view.value.tableId, view.value.id, view.value.type)
       })
@@ -1785,7 +1782,6 @@ const setFieldDefaultValue = field => {
   field.columnIndex = state.dimension.length + state.quota.length
   field.deExtractType = field.deType
 }
-
 const el = ref<HTMLElement | null>(null)
 const elDrag = ref<HTMLElement | null>(null)
 const { y, isDragging } = useDraggable(el, {
@@ -1799,7 +1795,6 @@ const calcEle = debounce(() => {
     y.value = previewHeight.value / 2 + 200
   })
 }, 500)
-
 const setCacheId = debounce(() => {
   nextTick(() => {
     // 富文本不使用cacheId
@@ -1820,7 +1815,6 @@ watch(
     calcEle()
   }
 )
-
 watch(
   () => curComponent.value,
   val => {
@@ -1828,7 +1822,6 @@ watch(
     setCacheId()
   }
 )
-
 const fieldDHeight = computed(() => {
   const h = y.value - 200
   if (h < 53) {
@@ -1836,7 +1829,6 @@ const fieldDHeight = computed(() => {
   }
   return h > previewHeight.value - 50 ? previewHeight.value - 50 : h
 })
-
 const dragVerticalTop = computed(() => {
   const h = y.value - 200
   if (h < 50) {
@@ -1844,7 +1836,6 @@ const dragVerticalTop = computed(() => {
   }
   return h > previewHeight.value - 53 ? previewHeight.value - 53 : h
 })
-
 const onRefreshChange = val => {
   recordSnapshotInfo('render')
   if (val === '' || parseFloat(val).toString() === 'NaN' || parseFloat(val) < 1) {
@@ -1852,14 +1843,10 @@ const onRefreshChange = val => {
     return
   }
 }
-
 const isCtrl = ref(false)
-
 const isDraggingItem = ref(false)
-
 const activeDimension = ref<Axis[]>([])
 const activeQuota = ref<Axis[]>([])
-
 const setActive = (ele, type = 'dimension') => {
   if (isCtrl.value) {
     isCtrl.value = false
@@ -1870,7 +1857,6 @@ const setActive = (ele, type = 'dimension') => {
   activeChild.value = activeChild.value.some(item => item.id === ele.id) ? [] : [ele]
   mergeFormatter(activeChild.value)
 }
-
 const setActiveCtrl = (ele, type = 'dimension') => {
   isCtrl.value = true
   const activeChild = type === 'dimension' ? activeDimension : activeQuota
@@ -1884,7 +1870,6 @@ const setActiveCtrl = (ele, type = 'dimension') => {
   activeChild.value.push(ele)
   mergeFormatter(activeChild.value)
 }
-
 const setActiveShift = (ele, type = 'dimension') => {
   const activeChild = type === 'dimension' ? activeDimension : activeQuota
   const deactivateChild = type === 'quota' ? activeDimension : activeQuota
@@ -1914,7 +1899,6 @@ const setActiveShift = (ele, type = 'dimension') => {
   }
   mergeFormatter(activeChild.value)
 }
-
 const mergeFormatter = (
   activeChildItems: any,
   value = dvMainStore.canvasStyleData.component.formatterItem
@@ -1923,16 +1907,13 @@ const mergeFormatter = (
     item['formatterCfg'] = merge(item['formatterCfg'], value)
   })
 }
-
 const isDrag = ref(false)
-
 const dragStartD = () => {
   isDrag.value = true
   setTimeout(() => {
     isDraggingItem.value = true
   }, 0)
 }
-
 const singleDragStartD = (e: DragEvent, ele, type) => {
   const activeChild = type === 'dimension' ? activeDimension : activeQuota
   const deactivateChild = type === 'quota' ? activeDimension : activeQuota
@@ -1943,14 +1924,12 @@ const singleDragStartD = (e: DragEvent, ele, type) => {
   mergeFormatter(activeChild.value)
   startToMove(e, unref(activeDimension.value))
 }
-
 const dragStart = () => {
   isDrag.value = true
   setTimeout(() => {
     isDraggingItem.value = true
   }, 0)
 }
-
 const singleDragStart = (e: DragEvent, ele, type) => {
   const activeChild = type === 'dimension' ? activeDimension : activeQuota
   const deactivateChild = type === 'quota' ? activeDimension : activeQuota
@@ -1968,26 +1947,21 @@ const singleDragStart = (e: DragEvent, ele, type) => {
     )
   )
 }
-
 const dragEnd = () => {
   isDrag.value = false
   isDraggingItem.value = false
 }
-
 const singleDragEnd = () => {
   activeDimension.value = []
   activeQuota.value = []
   dragEnd()
 }
-
 const dragEnter = (ev: MouseEvent) => {
   ev.preventDefault()
 }
-
 const dragOver = (ev: MouseEvent) => {
   ev.preventDefault()
 }
-
 const drop = (ev: MouseEvent, type = 'xAxis') => {
   ev.preventDefault()
   const arr = activeDimension.value.length ? activeDimension.value : activeQuota.value
@@ -2005,9 +1979,7 @@ const drop = (ev: MouseEvent, type = 'xAxis') => {
       view.value[type].push(obj)
       newDraggableIndex = view.value[type].length - 1
     }
-
     const e = { newDraggableIndex }
-
     if ('drillFields' === type) {
       addDrill(e)
     } else {
@@ -2015,9 +1987,7 @@ const drop = (ev: MouseEvent, type = 'xAxis') => {
     }
   }
 }
-
 const fieldLoading = ref(false)
-
 const copyChartFieldItem = id => {
   fieldLoading.value = true
   copyChartField(id, view.value.id)
@@ -2028,7 +1998,6 @@ const copyChartFieldItem = id => {
       fieldLoading.value = false
     })
 }
-
 const deleteChartFieldItem = id => {
   fieldLoading.value = true
   deleteChartField(id)
@@ -2039,13 +2008,11 @@ const deleteChartFieldItem = id => {
       fieldLoading.value = false
     })
 }
-
 let directionTop = 0
 const scrollToTop = debounce(() => {
   chartStyleRef.value.setScrollTop(directionTop)
   directionTop = 0
 }, 10)
-
 const chartStyleRef = ref()
 const chartStyleScroll = (val: any) => {
   if (chartStyleRef.value) {
@@ -2064,7 +2031,6 @@ const chartStyleScroll = (val: any) => {
   }
 }
 </script>
-
 <template>
   <div class="chart-edit" :class="'editor-' + themes" @keydown.stop @keyup.stop>
     <!--移动端设计使用 注意与pc设计同步-->
@@ -2129,7 +2095,6 @@ const chartStyleScroll = (val: any) => {
         </el-scrollbar>
       </el-container>
     </template>
-
     <!--pc端设计使用-->
     <template v-if="!mobileInPc">
       <el-row v-loading="loading" class="de-chart-editor">
@@ -2180,7 +2145,6 @@ const chartStyleScroll = (val: any) => {
                 </el-popover>
               </div>
             </el-row>
-
             <el-row :style="elRowStyle">
               <el-scrollbar v-if="view.type === 'VQuery' && curComponent">
                 <div class="query-style-tab">
@@ -2428,7 +2392,6 @@ const chartStyleScroll = (val: any) => {
                             <drag-placeholder :drag-list="view.xAxisExt" />
                           </div>
                         </el-row>
-
                         <!--flowMapStartName-->
                         <el-row v-if="showAxis('flowMapStartName')" class="padding-lr drag-data">
                           <div class="form-draggable-title">
@@ -2493,7 +2456,6 @@ const chartStyleScroll = (val: any) => {
                             <drag-placeholder :themes="themes" :drag-list="view.flowMapStartName" />
                           </div>
                         </el-row>
-
                         <!--flowMapEndName-->
                         <el-row v-if="showAxis('flowMapEndName')" class="padding-lr drag-data">
                           <div class="form-draggable-title">
@@ -2558,7 +2520,6 @@ const chartStyleScroll = (val: any) => {
                             <drag-placeholder :themes="themes" :drag-list="view.flowMapEndName" />
                           </div>
                         </el-row>
-
                         <!--extStack-->
                         <el-row v-if="showAxis('extStack')" class="padding-lr drag-data">
                           <div class="form-draggable-title">
@@ -3237,7 +3198,92 @@ const chartStyleScroll = (val: any) => {
                             <drag-placeholder :drag-list="view.extBubble" />
                           </div>
                         </el-row>
-
+                        <!--extLabel-->
+                        <el-row
+                          v-if="showAxis('extLabel') && chartViewInstance.axisConfig.extLabel"
+                          class="padding-lr drag-data"
+                        >
+                          <div class="form-draggable-title">
+                            <span class="data-area-label">
+                              <span style="margin-right: 4px">
+                                {{ chartViewInstance.axisConfig.extLabel?.name }}
+                                <i
+                                  v-if="!chartViewInstance.axisConfig.extLabel?.allowEmpty"
+                                  class="required"
+                                ></i>
+                              </span>
+                              <el-tooltip
+                                v-if="chartViewInstance.axisConfig.extLabel?.tooltip"
+                                class="item"
+                                :effect="toolTip"
+                                placement="top"
+                              >
+                                <template #content>
+                                  <span> {{ chartViewInstance.axisConfig.extLabel?.tooltip }}</span>
+                                </template>
+                                <el-icon
+                                  class="hint-icon"
+                                  :class="{ 'hint-icon--dark': themes === 'dark' }"
+                                >
+                                  <Icon name="icon_info_outlined"
+                                    ><icon_info_outlined class="svg-icon"
+                                  /></Icon>
+                                </el-icon>
+                              </el-tooltip>
+                            </span>
+                            <el-tooltip
+                              :effect="toolTip"
+                              placement="top"
+                              :content="t('common.delete')"
+                            >
+                              <el-icon
+                                class="remove-icon"
+                                :class="{ 'remove-icon--dark': themes === 'dark' }"
+                                size="14px"
+                                @click="removeItems('extLabel')"
+                              >
+                                <Icon class-name="inner-class" name="icon_delete-trash_outlined"
+                                  ><icon_deleteTrash_outlined class="svg-icon inner-class"
+                                /></Icon>
+                              </el-icon>
+                            </el-tooltip>
+                          </div>
+                          <div
+                            @drop="$event => drop($event, 'extLabel')"
+                            @dragenter="dragEnter"
+                            @dragover="$event => dragOver($event)"
+                          >
+                            <draggable
+                              :list="view.extLabel"
+                              :move="onMove"
+                              item-key="id"
+                              group="drag"
+                              animation="300"
+                              class="drag-block-style"
+                              :class="{ dark: themes === 'dark' }"
+                              @add="addExtLabel"
+                              @change="e => onAxisChange(e, 'extLabel')"
+                            >
+                              <template #item="{ element, index }">
+                                <quota-item
+                                  :dimension-data="state.dimension"
+                                  :quota-data="state.quota"
+                                  :chart="view"
+                                  :item="element"
+                                  :index="index"
+                                  :themes="props.themes"
+                                  type="extLabel"
+                                  @onQuotaItemChange="quotaItemChange"
+                                  @onQuotaItemRemove="quotaItemRemove"
+                                  @onNameEdit="showRename"
+                                  @valueFormatter="valueFormatter"
+                                  @editSortPriority="editSortPriority"
+                                />
+                              </template>
+                            </draggable>
+                            <drag-placeholder :drag-list="view.extLabel" />
+                          </div>
+                        </el-row>
                         <!--drill-->
                         <el-row v-if="showAxis('drill')" class="padding-lr drag-data">
                           <div class="form-draggable-title">
@@ -3311,7 +3357,6 @@ const chartStyleScroll = (val: any) => {
                             <drag-placeholder :drag-list="view.drillFields" />
                           </div>
                         </el-row>
-
                         <!--filter-->
                         <el-row class="padding-lr drag-data no-top-border no-top-padding">
                           <div class="form-draggable-title">
@@ -3335,7 +3380,6 @@ const chartStyleScroll = (val: any) => {
                               </el-icon>
                             </el-tooltip>
                           </div>
-
                           <div
                             class="tree-btn"
                             v-if="isFilterActive || themes === 'dark'"
@@ -3351,7 +3395,6 @@ const chartStyleScroll = (val: any) => {
                                 ><iconFilter class="svg-icon svg-background"
                               /></Icon>
                             </el-icon>
-
                             <span>{{ $t('chart.filter') }}</span>
                           </div>
                           <el-button
@@ -3366,7 +3409,6 @@ const chartStyleScroll = (val: any) => {
                             <span>{{ $t('chart.filter') }}</span>
                           </el-button>
                         </el-row>
-
                         <el-row v-if="showAggregate" class="refresh-area">
                           <el-form-item
                             class="form-item no-margin-bottom"
@@ -3478,7 +3520,6 @@ const chartStyleScroll = (val: any) => {
                             </el-radio-group>
                           </span>
                         </div>
-
                         <el-button
                           :disabled="disableUpdate"
                           type="primary"
@@ -3493,7 +3534,6 @@ const chartStyleScroll = (val: any) => {
                     </el-footer>
                   </el-container>
                 </el-tab-pane>
-
                 <el-tab-pane
                   name="style"
                   :label="t('chart.chart_style')"
@@ -3557,7 +3597,6 @@ const chartStyleScroll = (val: any) => {
                     </el-scrollbar>
                   </el-container>
                 </el-tab-pane>
-
                 <el-tab-pane
                   name="senior"
                   :label="t('chart.senior')"
@@ -4091,7 +4130,6 @@ const chartStyleScroll = (val: any) => {
         </div>
       </template>
     </el-dialog>
-
     <!--指标过滤器-->
     <el-dialog
       v-if="state.quotaFilterEdit"
@@ -4127,7 +4165,6 @@ const chartStyleScroll = (val: any) => {
         </div>
       </template>
     </el-dialog>
-
     <!--同环比设置-->
     <el-dialog
       v-if="state.showEditQuotaCompare"
@@ -4153,7 +4190,6 @@ const chartStyleScroll = (val: any) => {
         </div>
       </template>
     </el-dialog>
-
     <!--数值格式化-->
     <el-dialog
       v-if="state.showValueFormatter"
@@ -4174,7 +4210,6 @@ const chartStyleScroll = (val: any) => {
         </div>
       </template>
     </el-dialog>
-
     <!--xAxis自定义排序-->
     <el-dialog
       v-if="state.showCustomSort"
@@ -4198,7 +4233,6 @@ const chartStyleScroll = (val: any) => {
         </div>
       </template>
     </el-dialog>
-
     <el-dialog
       v-model="state.showSortPriority"
       :close-on-click-modal="false"
@@ -4220,7 +4254,6 @@ const chartStyleScroll = (val: any) => {
         </div>
       </template>
     </el-dialog>
-
     <!--图表计算字段-->
     <el-dialog
       v-model="editCalcField"
@@ -4248,21 +4281,17 @@ const chartStyleScroll = (val: any) => {
     />
   </Teleport>
 </template>
-
 <style lang="less" scoped>
 @import '@/style/mixin.less';
-
 .right-dimension {
   .item {
     width: 100%;
     height: 28px;
     position: relative;
     overflow: hidden;
-
     & + .item {
       margin-top: 2px;
     }
-
     .items {
       width: 100%;
       height: 28px;
@@ -4280,11 +4309,9 @@ const chartStyleScroll = (val: any) => {
       &:hover {
         background: #1f23291a;
       }
-
       &.item-dimension--dark:hover {
         background: #ebebeb1a;
       }
-
       .ed-icon {
         font-size: 14px;
       }
@@ -4292,11 +4319,9 @@ const chartStyleScroll = (val: any) => {
         border-color: var(--ed-color-primary, #3370ff);
       }
     }
-
     .is-dragging-item {
       z-index: 10;
     }
-
     .shadow {
       position: absolute;
       width: 100%;
@@ -4311,7 +4336,6 @@ const chartStyleScroll = (val: any) => {
           margin-top: 2px;
         }
       }
-
       &.is-dragging {
         float: left;
         position: relative;
@@ -4322,17 +4346,14 @@ const chartStyleScroll = (val: any) => {
 .collapse-icon {
   color: #a6a6a6;
 }
-
 .hint-icon {
   cursor: pointer;
   font-size: 14px;
   color: #646a73;
-
   &.hint-icon--dark {
     color: #a6a6a6;
   }
 }
-
 .editor-light {
   border-left: solid 1px @side-outline-border-color-light !important;
   color: @canvas-main-font-color-light!important;
@@ -4365,7 +4386,6 @@ const chartStyleScroll = (val: any) => {
   :deep(.item-span-style) {
     color: @canvas-main-font-color-light!important;
   }
-
   :deep(.editor-title) {
     color: #1f2329 !important;
   }
@@ -4378,17 +4398,13 @@ const chartStyleScroll = (val: any) => {
   .query-style-tab {
     width: 100%;
     border-top: solid 1px @side-outline-border-color-light !important;
-
     .tab-container {
       .border-bottom-tab(8px);
     }
-
     margin-left: 0px !important;
-
     :deep(.ed-tabs__header) {
       border-top: none !important;
     }
-
     :deep(.ed-tabs__nav-wrap::after) {
       background-color: rgba(31, 35, 41, 0.15);
     }
@@ -4407,17 +4423,13 @@ const chartStyleScroll = (val: any) => {
   .query-style-tab {
     width: 100%;
     border-top: solid 1px @side-outline-border-color-light !important;
-
     .tab-container {
       .border-bottom-tab(8px);
     }
-
     margin-left: 0px !important;
-
     :deep(.ed-tabs__header) {
       border-top: none !important;
     }
-
     :deep(.ed-tabs__nav-wrap::after) {
       background-color: rgba(31, 35, 41, 0.15);
     }
@@ -4434,7 +4446,6 @@ const chartStyleScroll = (val: any) => {
     }
   }
 }
-
 // editor form 全局样式
 .editor-dark {
   border-left: solid 1px @main-collapse-border-dark !important;
@@ -4459,17 +4470,13 @@ const chartStyleScroll = (val: any) => {
   .query-style-tab {
     width: 100%;
     border-top: solid 1px @main-collapse-border-dark !important;
-
     .tab-container {
       .border-bottom-tab(8px);
     }
-
     margin-left: 0px !important;
-
     :deep(.ed-tabs__header) {
       border-top: none !important;
     }
-
     :deep(.ed-tabs__nav-wrap::after) {
       background-color: rgba(31, 35, 41, 0.15);
     }
@@ -4486,7 +4493,6 @@ const chartStyleScroll = (val: any) => {
     }
   }
 }
-
 .chart-edit {
   position: relative;
   transition: 0.5s;
@@ -4497,11 +4503,9 @@ const chartStyleScroll = (val: any) => {
 .ed-row {
   display: block;
 }
-
 span {
   font-size: 12px;
 }
-
 .de-chart-editor {
   height: 100%;
   overflow-y: hidden;
@@ -4510,13 +4514,11 @@ span {
   transition: 0.5s;
   .padding-lr {
     padding: 0 16px;
-
     &.no-top-border {
       border-top: none !important;
     }
     &.no-top-padding {
       padding-top: 0 !important;
-
       :deep(.drag-placeholder-style) {
         top: calc(50% - 8px);
       }
@@ -4531,29 +4533,23 @@ span {
     overflow: hidden;
     margin-left: 38px;
   }
-
   .view-panel-row {
     overflow-y: auto;
     overflow-x: hidden;
     height: 100%;
-
     :deep(.ed-collapse-item__content) {
       padding: 16px 10px 0;
     }
   }
-
   .tab-header {
     --ed-tabs-header-height: 34px;
     --custom-tab-color: #646a73;
-
     :deep(.ed-tabs__nav-wrap::after) {
       background-color: unset;
     }
-
     &.dark {
       --custom-tab-color: #a6a6a6;
     }
-
     height: 100%;
     :deep(.ed-tabs__header) {
       border-top: solid 1px @side-outline-border-color;
@@ -4564,33 +4560,26 @@ span {
       padding: 0 8px !important;
       margin-right: 12px;
     }
-
     :deep(.ed-tabs__item:not(.is-active)) {
       color: var(--custom-tab-color);
     }
-
     :deep(.ed-tabs__item.is-active) {
       font-weight: 500;
     }
-
     :deep(.ed-tabs__nav-scroll) {
       padding-left: 0 !important;
     }
-
     :deep(.ed-tabs__header) {
       margin: 0 !important;
     }
-
     :deep(.ed-tabs__content) {
       height: calc(100% - 35px);
       overflow-y: auto;
       overflow-x: hidden;
     }
   }
-
   .field-height {
     height: 50%;
-
     .label-top {
       color: #646a73;
       font-size: 12px;
@@ -4598,19 +4587,16 @@ span {
       font-weight: 500;
       line-height: 20px;
     }
-
     &.first {
       border-top: none !important;
       position: relative;
     }
-
     .drag-vertical {
       width: 100%;
       height: 4px;
       position: absolute;
       left: 0;
       cursor: row-resize;
-
       &.is-hovering::after,
       &:hover::after {
         width: calc(100% - 32px);
@@ -4622,13 +4608,11 @@ span {
         background: var(--ed-color-primary, #3370ff);
       }
     }
-
     &.dark {
       label {
         color: #a6a6a6;
       }
     }
-
     .divider {
       width: 100%;
       height: 1px;
@@ -4636,14 +4620,12 @@ span {
       background-color: rgba(255, 255, 255, 0.15);
     }
   }
-
   .drag-list {
     height: calc(100% - 26px);
     min-height: 24px;
     //overflow: auto;
     padding: 2px 0;
   }
-
   .item-dimension {
     padding: 4px 10px;
     margin: 0 2px;
@@ -4657,34 +4639,26 @@ span {
     position: relative;
     border-radius: 6px;
     border: 1px solid transparent;
-
     font-size: 12px;
     font-weight: 400;
     line-height: 20px;
     vertical-align: middle;
-
     height: 28px;
-
     cursor: pointer;
-
     &:hover {
       background: rgba(31, 35, 41, 0.1);
     }
-
     &.item-dimension--dark {
       &:hover {
         background: rgba(235, 235, 235, 0.1);
       }
     }
-
     &.sortable-chosen {
       border: 1px solid var(--ed-color-primary, #3370ff);
       background: #fff;
-
       &:hover {
         background: #fff;
       }
-
       &.item-dimension--dark {
         background: #1a1a1a;
         &:hover {
@@ -4693,15 +4667,12 @@ span {
       }
     }
   }
-
   .father .child {
     visibility: hidden;
   }
-
   .father:hover .child {
     visibility: visible;
   }
-
   .field-name {
     display: inline-block;
     width: 90px;
@@ -4712,42 +4683,34 @@ span {
     padding-left: 4px;
     font-weight: 400;
     color: #646a73;
-
     &.dark {
       color: #ebebeb;
     }
   }
-
   .padding-tab {
     padding: 0;
     height: 100%;
     width: 100%;
     display: flex;
-
     :deep(.ed-scrollbar) {
       &.has-footer {
         height: calc(100% - 81px);
       }
     }
-
     :deep(.ed-footer) {
       padding: 0;
       height: 114px;
     }
   }
-
   .result-count {
     width: 60px;
-
     :deep(.ed-input__wrapper) {
       padding: 1px 2px;
     }
   }
-
   .result-count :deep(input) {
     padding: 0 4px;
   }
-
   .data-area-label {
     text-align: left;
     position: relative;
@@ -4764,17 +4727,14 @@ span {
       font-weight: 400;
     }
   }
-
   .form-draggable-title {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: space-between;
-
     span {
       cursor: default;
     }
-
     :deep(.required::after) {
       content: '*';
       color: var(--ed-color-danger);
@@ -4783,23 +4743,19 @@ span {
       font-style: normal;
       font-weight: 400;
     }
-
     .remove-icon {
       color: #646a73;
       cursor: pointer;
       margin-top: 2px;
       margin-right: 2px;
-
       &.remove-icon--dark {
         color: #a6a6a6;
       }
-
       .inner-class {
         font-size: 14px;
       }
     }
   }
-
   .drag-block-style {
     padding: 2px 0 0 0;
     width: 100%;
@@ -4812,41 +4768,33 @@ span {
     border: 1px dashed #bbbfc4;
     background-color: rgba(31, 35, 41, 0.05);
     margin-top: 8px;
-
     &.dark {
       border: 1px dashed #5f5f5f;
       background-color: rgba(235, 235, 235, 0.05);
     }
-
     &:has(span) {
       background-color: transparent !important;
     }
   }
-
   .draggable-group {
     display: block;
     width: 100%;
     height: calc(100% - 6px);
   }
-
   .ed-input-refresh-time {
     width: calc(50% - 4px) !important;
   }
-
   .ed-input-refresh-unit {
     margin-left: 8px;
     width: calc(50% - 4px) !important;
   }
-
   .ed-input-refresh-loading {
     margin-left: 4px;
     font-size: 12px !important;
   }
-
   .drag-data {
     padding-top: 8px;
     padding-bottom: 16px;
-
     .tree-btn {
       width: 100%;
       margin-top: 8px;
@@ -4864,30 +4812,25 @@ span {
         background: rgba(235, 235, 235, 0.05);
         border-color: #5f5f5f;
       }
-
       &.active {
         color: var(--ed-color-primary, #3370ff);
         border-color: var(--ed-color-primary, #3370ff);
       }
-
       &.invalid {
         color: red !important;
         border-color: red !important;
       }
     }
-
     :deep(.tree-btn_secondary) {
       width: 100%;
       margin-top: 8px;
       line-height: 28px;
       height: 28px;
       font-size: 12px;
-
       & > [class*='ed-icon'] + span {
         margin-left: 2px !important;
       }
     }
-
     &.no-top-border {
       border-top: none !important;
     }
@@ -4901,7 +4844,6 @@ span {
       border-top: none !important;
     }
   }
-
   .editor-title {
     color: @dv-canvas-main-font-color;
     font-weight: 500;
@@ -4911,7 +4853,6 @@ span {
     justify-content: space-between;
     padding: 0 8px;
     line-height: 22px;
-
     span {
       width: calc(100% - 24px);
       overflow-x: hidden;
@@ -4920,23 +4861,19 @@ span {
       white-space: nowrap;
     }
   }
-
   .ed-tabs {
     --el-tabs-header-height: 38px !important;
   }
-
   .switch-chart {
     display: flex;
     align-items: center;
     height: 100%;
     justify-content: space-between;
   }
-
   .dataset-selector :deep(.ed-input__inner) {
     height: 24px;
     width: 110px;
   }
-
   .result-style {
     position: absolute;
     bottom: 0;
@@ -4963,16 +4900,13 @@ span {
     justify-content: space-between;
     height: 40px;
     padding: 0 6px;
-
     .margin20-radio {
       margin-right: 20px;
     }
-
     .result-count-label {
       color: #1f2329;
       font-size: 12px;
       font-weight: 400;
-
       &.dark {
         color: #fff;
       }
@@ -4983,7 +4917,6 @@ span {
     width: 100%;
     border-radius: 0;
   }
-
   .switch-chart-dark {
     :deep(.ed-button) {
       color: #ffffff;
@@ -4995,7 +4928,6 @@ span {
       border: 1px solid var(--ed-color-primary, #3370ff);
     }
   }
-
   .dataset-search {
     height: 51px;
     width: 100%;
@@ -5007,7 +4939,6 @@ span {
     justify-content: space-between;
     color: #1f2329;
     font-weight: 500;
-
     &.dark {
       color: #ebebeb;
     }
@@ -5029,7 +4960,6 @@ span {
         background: rgba(31, 35, 41, 0.1);
       }
     }
-
     &.dark {
       color: #a6a6a6;
       &:hover {
@@ -5039,10 +4969,8 @@ span {
       }
     }
   }
-
   .dataset-search-input {
     font-size: 12px;
-
     :deep(.ed-input__inner) {
       background-color: @side-area-background-light;
       color: @canvas-main-font-color-light;
@@ -5054,7 +4982,6 @@ span {
       border-radius: 0;
       padding: 1px 4px;
     }
-
     &.dark {
       :deep(.ed-input__inner) {
         background-color: @side-area-background;
@@ -5067,13 +4994,11 @@ span {
     }
   }
 }
-
 .chart_type_area {
   height: 54px;
   overflow: auto;
   padding: 8px;
 }
-
 .drag_main_area {
   border-top: 1px solid @side-outline-border-color;
   overflow: auto;
@@ -5085,7 +5010,6 @@ span {
     overflow-x: hidden;
   }
 }
-
 .collapse-title {
   color: @dv-canvas-main-font-color;
   width: 35px;
@@ -5097,7 +5021,6 @@ span {
     text-orientation: mixed;
   }
 }
-
 .custom-icon {
   position: absolute;
   right: 9px;
@@ -5121,21 +5044,18 @@ span {
   }
   .ed-input {
     --ed-input-height: 28px;
-
     .ed-input__suffix {
       height: 26px;
     }
   }
   .ed-input-number {
     width: 100%;
-
     .ed-input-number__decrease {
       --ed-input-number-controls-height: 13px;
     }
     .ed-input-number__increase {
       --ed-input-number-controls-height: 13px;
     }
-
     .ed-input__inner {
       text-align: start;
     }
@@ -5172,7 +5092,6 @@ span {
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
-
   height: unset;
   line-height: 20px;
   margin-bottom: 8px;
@@ -5181,7 +5100,6 @@ span {
   .ed-form-item__label {
     color: @canvas-main-font-color-dark;
   }
-
   &.select-append {
     .ed-input-group__append {
       background-color: transparent;
@@ -5196,7 +5114,6 @@ span {
     }
   }
 }
-
 :deep(.form-item-light) {
   &.select-append {
     .ed-input-group__append {
@@ -5227,34 +5144,27 @@ span {
 .dataset-main {
   border-left: 1px solid @side-outline-border-color;
 }
-
 .content-area {
   height: 100%;
   position: relative;
   transition: 0.5s;
   overflow-x: hidden;
 }
-
 .content-area-close {
   width: 35px;
 }
-
 .content-area-left-open {
   width: 240px;
 }
-
 .content-area-right-open {
   width: 179px;
 }
-
 .dataset-main-top {
   padding: 0;
-
   &::-webkit-scrollbar {
     display: none;
   }
 }
-
 .dataset-select {
   padding: 8px;
   display: flex;
@@ -5272,15 +5182,12 @@ span {
     padding-left: 0 !important;
     padding-bottom: 10px !important;
   }
-
   &.data-tab-collapse {
     border-bottom: none;
     border-top: 1px solid var(--ed-collapse-border-color);
-
     :deep(.ed-collapse-item.ed-collapse--dark .ed-collapse-item__wrap) {
       background-color: #1a1a1a;
     }
-
     :deep(.ed-collapse-item__wrap) {
       border-top: none !important;
     }
@@ -5305,15 +5212,12 @@ span {
 .father .child {
   visibility: hidden;
 }
-
 .father:hover .child {
   visibility: visible;
 }
-
 .icon-setting {
   color: #a6a6a6;
 }
-
 .label-icon {
   top: 2px;
   margin-left: 6px;
@@ -5332,7 +5236,6 @@ span {
     color: black;
   }
 }
-
 .chart-type-select {
   width: 100%;
   margin-top: 8px;
@@ -5354,16 +5257,13 @@ span {
 }
 .name-edit-form {
   margin-bottom: 16px !important;
-
   .text {
     font-family: var(--de-custom_font, 'PingFang');
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
     line-height: 22px;
-
     --ed-input-height: 32px;
-
     :deep(.ed-input__inner) {
       font-family: var(--de-custom_font, 'PingFang');
       font-size: 14px;
@@ -5372,23 +5272,19 @@ span {
       line-height: 22px;
     }
   }
-
   :deep(.ed-form-item__label) {
     color: #1f2329;
-
     font-family: var(--de-custom_font, 'PingFang');
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
     line-height: 22px;
   }
-
   &.no-margin-bottom {
     margin-bottom: 0 !important;
   }
 }
 </style>
-
 <style lang="less">
 .ed-dropdown__popper.ed-popper.is-dark:has(.dark-dimension-quota) {
   border: none;
@@ -5400,11 +5296,9 @@ span {
 .chart-type-hide-options {
   display: none;
 }
-
 .custom_sort_dialog {
   max-height: calc(100vh - 100px);
   min-height: 152px;
-
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -5412,25 +5306,20 @@ span {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-
   .ed-dialog__body {
     flex: 1;
   }
 }
-
 .refresh-active-footer {
   height: 150px !important;
 }
-
 .refresh-area {
   width: 100%;
   padding: 0 8px;
-
   .no-margin-bottom {
     margin-bottom: 8px;
   }
 }
-
 .name-area {
   position: relative;
   line-height: 24px;
@@ -5449,7 +5338,6 @@ span {
     height: 100%;
   }
 }
-
 .component-name-dark {
   input {
     position: absolute;
