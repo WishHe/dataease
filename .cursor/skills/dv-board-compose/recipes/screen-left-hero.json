@@ -1,0 +1,55 @@
+{
+  "id": "screen-left-hero",
+  "dv_type": "dataV",
+  "name": "左侧主图大屏",
+  "scene": ["monitoring"],
+  "canvas": { "width": 1920, "height": 1080 },
+  "kit_required": true,
+  "copy_kit_skin": true,
+  "slots": [
+    {
+      "id": "header",
+      "role": "header",
+      "region": "top",
+      "geom": { "left": 80, "top": 16, "width": 1760, "height": 88 }
+    },
+    {
+      "id": "hero",
+      "role": "hero",
+      "region": "left",
+      "require": { "hero_ok": true },
+      "geom": { "left": 40, "top": 120, "width": 1100, "height": 780 }
+    },
+    {
+      "id": "kpi-1",
+      "role": "kpi",
+      "region": "top-right",
+      "geom": { "left": 1160, "top": 120, "width": 720, "height": 140 }
+    },
+    {
+      "id": "kpi-2",
+      "role": "kpi",
+      "region": "right",
+      "geom": { "left": 1160, "top": 276, "width": 720, "height": 140 }
+    },
+    {
+      "id": "support-1",
+      "role": "support",
+      "region": "right",
+      "geom": { "left": 1160, "top": 432, "width": 720, "height": 230 }
+    },
+    {
+      "id": "support-2",
+      "role": "support",
+      "region": "right",
+      "geom": { "left": 1160, "top": 678, "width": 720, "height": 222 }
+    },
+    {
+      "id": "footer",
+      "role": "footer",
+      "region": "bottom",
+      "optional": true,
+      "geom": { "left": 40, "top": 920, "width": 1100, "height": 140 }
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "id": "screen-hero-center",
+  "dv_type": "dataV",
+  "name": "中央 C 位大屏",
+  "scene": ["monitoring", "overview"],
+  "canvas": { "width": 1920, "height": 1080 },
+  "kit_required": true,
+  "copy_kit_skin": true,
+  "slots": [
+    {
+      "id": "header",
+      "role": "header",
+      "region": "top",
+      "geom": { "left": 80, "top": 16, "width": 1760, "height": 88 }
+    },
+    {
+      "id": "kpi-1",
+      "role": "kpi",
+      "region": "top-left",
+      "geom": { "left": 40, "top": 120, "width": 400, "height": 150 }
+    },
+    {
+      "id": "kpi-2",
+      "role": "kpi",
+      "region": "left",
+      "geom": { "left": 40, "top": 286, "width": 400, "height": 150 }
+    },
+    {
+      "id": "kpi-3",
+      "role": "kpi",
+      "region": "left",
+      "geom": { "left": 40, "top": 452, "width": 400, "height": 150 }
+    },
+    {
+      "id": "hero",
+      "role": "hero",
+      "region": "center",
+      "require": { "hero_ok": true },
+      "geom": { "left": 460, "top": 120, "width": 1000, "height": 640 }
+    },
+    {
+      "id": "support-1",
+      "role": "support",
+      "region": "right",
+      "geom": { "left": 1480, "top": 120, "width": 400, "height": 400 }
+    },
+    {
+      "id": "support-2",
+      "role": "support",
+      "region": "right",
+      "geom": { "left": 1480, "top": 540, "width": 400, "height": 220 }
+    },
+    {
+      "id": "footer",
+      "role": "footer",
+      "region": "bottom",
+      "geom": { "left": 40, "top": 780, "width": 1840, "height": 260 }
+    }
+  ]
+}

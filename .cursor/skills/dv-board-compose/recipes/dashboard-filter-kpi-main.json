@@ -1,0 +1,59 @@
+{
+  "id": "dashboard-filter-kpi-main",
+  "dv_type": "dashboard",
+  "name": "筛选 + KPI + 主辅图",
+  "scene": ["analysis", "overview"],
+  "canvas": {
+    "width": 1600,
+    "height": 900,
+    "matrix": { "x": 72, "y": 36 }
+  },
+  "kit_required": true,
+  "copy_kit_skin": true,
+  "slots": [
+    {
+      "id": "filter",
+      "role": "filter",
+      "region": "top-row",
+      "optional": true,
+      "geom": { "x": 1, "y": 1, "sizeX": 72, "sizeY": 4 }
+    },
+    {
+      "id": "kpi-1",
+      "role": "kpi",
+      "region": "top-left",
+      "geom": { "x": 1, "y": 5, "sizeX": 18, "sizeY": 6 }
+    },
+    {
+      "id": "kpi-2",
+      "role": "kpi",
+      "region": "top",
+      "geom": { "x": 19, "y": 5, "sizeX": 18, "sizeY": 6 }
+    },
+    {
+      "id": "kpi-3",
+      "role": "kpi",
+      "region": "top",
+      "geom": { "x": 37, "y": 5, "sizeX": 18, "sizeY": 6 }
+    },
+    {
+      "id": "kpi-4",
+      "role": "kpi",
+      "region": "top-right",
+      "geom": { "x": 55, "y": 5, "sizeX": 18, "sizeY": 6 }
+    },
+    {
+      "id": "hero",
+      "role": "hero",
+      "region": "center",
+      "require": { "hero_ok": true },
+      "geom": { "x": 1, "y": 11, "sizeX": 48, "sizeY": 20 }
+    },
+    {
+      "id": "support-1",
+      "role": "support",
+      "region": "right",
+      "geom": { "x": 49, "y": 11, "sizeX": 24, "sizeY": 20 }
+    }
+  ]
+}

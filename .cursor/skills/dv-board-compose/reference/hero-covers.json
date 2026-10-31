@@ -1,0 +1,133 @@
+{
+  "_comment": "C-position judged from market cover screenshots in workspace/screenshots/. expect.kind is required; chart_type is optional.",
+  "panel-tapd-仪表板-template": {
+    "cover": "TAPD-仪表板.png",
+    "expect": { "kind": "chart", "chart_type": "bar-stack" },
+    "note": "C 位是「需求状态统计」堆叠柱，不是底栏表格"
+  },
+  "panel-zabbix告警大屏-template": {
+    "cover": "Zabbix告警监控平台-复刻-仪表板.png",
+    "expect": { "kind": "map" },
+    "note": "中央气泡地图"
+  },
+  "panel-上海市二手房数据看板-template": {
+    "cover": "上海市二手房数据看板.png",
+    "expect": { "kind": "table" },
+    "note": "C 位是上方「小区房屋概况」大表，不是底部 treemap/sankey"
+  },
+  "panel-北京房价-template": {
+    "cover": "北京房价分析.png",
+    "expect": { "kind": "map" },
+    "note": "中央各区房价地图"
+  },
+  "panel-年度销售总结报表": {
+    "cover": "年度销售总结报表.png",
+    "expect": { "kind": "chart", "chart_type": "chart-mix" },
+    "note": "C 位是底部「订单与销售额走势」组合图"
+  },
+  "panel-广州xx机场看板-template": {
+    "cover": "广州xx机场看板.jpg",
+    "expect": { "kind": "chart", "chart_type": "area" },
+    "note": "右侧航班趋势面积图；Tab 重复子图不算多个 C 位"
+  },
+  "panel-某平台商品运营看板-template": {
+    "cover": "某平台商品运营看板.png",
+    "expect": { "kind": "chart" },
+    "note": "中央 Tab「商品材质销售额」里的图，不是三个饼图各算一个 hero"
+  },
+  "panel-某购物平台销售情况-template": {
+    "cover": "某购物平台销售情况.png",
+    "expect": { "kind": "map" },
+    "note": "中央全国销售额地图"
+  },
+  "screen-2024圣诞节海外市场消费报告-template": {
+    "cover": "2024圣诞节海外市场消费报告.jpg",
+    "expect": { "kind": "map" },
+    "note": "左上世界搜索热度地图；松枝礼盒是皮肤不是 C 位"
+  },
+  "screen-maxkb-系统数据概览-template": {
+    "cover": "MaxKB-系统数据概览.png",
+    "expect": { "kind": "media" },
+    "note": "中央 MaxKB 光球，不是铺满的底座大图"
+  },
+  "screen-zabbix-监控告警大屏-template": {
+    "cover": "Zabbix监控告警大屏.jpg",
+    "expect": { "kind": "media" },
+    "note": "中央 3D 地球"
+  },
+  "screen-zabbix-监控告警大屏-科技蓝-template": {
+    "cover": "Zabbix-监控告警大屏（科技蓝）.png",
+    "expect": { "kind": "media" },
+    "note": "Group 里的中央地球，宽幅光效底图不是 C 位"
+  },
+  "screen-供应链物流驾驶舱大屏-template": {
+    "cover": "供应链物流驾驶舱大屏.png",
+    "expect": { "kind": "map" },
+    "note": "中央物流飞线地图"
+  },
+  "screen-内蒙古生态资源-template": {
+    "cover": "内蒙古生态资源.png",
+    "expect": { "kind": "map" },
+    "note": "中央内蒙古地图；弹窗照片不是 C 位"
+  },
+  "screen-四川省工业园区智慧环保平台-template": {
+    "cover": "四川省工业园区智慧环保平台.png",
+    "expect": { "kind": "media" },
+    "note": "中央 3D 四川地图大图，比数据地图大得多"
+  },
+  "screen-媒体设备管理数据大屏-template": {
+    "cover": "媒体设备管理数据大屏.png",
+    "expect": { "kind": "map" },
+    "note": "中央设备分布地图"
+  },
+  "screen-春节大数据可视化大屏-template-xivm": {
+    "cover": "春节大数据可视化大屏.jpg",
+    "expect": { "kind": "media" },
+    "note": "中央「全社会跨区域人员流动量」金色底图卡片"
+  },
+  "screen-智慧社区综合管理服务平台-template": {
+    "cover": "智慧社区综合管理服务平台.png",
+    "expect": { "kind": "media" },
+    "note": "C 位是画布背景上的社区 3D 鸟瞰，不是侧栏小图"
+  },
+  "screen-某行业项目管理看板-template-oqns": {
+    "cover": "某行业项目管理看板.png",
+    "expect": { "kind": "table" },
+    "note": "中央「项目进度详情」表"
+  },
+  "screen-电商运营数据平台-template": {
+    "cover": "电商运营数据平台.png",
+    "expect": { "kind": "media" },
+    "note": "中央大图面板"
+  },
+  "screen-社区智慧化数据平台-template": {
+    "cover": "社区智慧化数据平台.png",
+    "expect": { "kind": "media" },
+    "note": "C 位是画布背景城市夜景，左右细长条是皮肤"
+  },
+  "screen-网络系统数据监控平台-template": {
+    "cover": "网络系统数据监控平台.png",
+    "expect": { "kind": "map" },
+    "note": "中央河北地图"
+  },
+  "screen-药店经营数据平台-template": {
+    "cover": "药店经营数据平台.png",
+    "expect": { "kind": "map" },
+    "note": "上中「各地区药品销量」地图"
+  },
+  "screen-资源管理大屏-template": {
+    "cover": "资源管理大屏.gif",
+    "expect": { "kind": "media" },
+    "note": "中央大场景图叠地图，场景图明显更大"
+  },
+  "factory-energy-screen": {
+    "cover": null,
+    "expect": { "kind": "map" },
+    "note": "夹具：中央地图"
+  },
+  "sales-dashboard": {
+    "cover": null,
+    "expect": { "kind": "chart" },
+    "note": "夹具：无地图时取最大图"
+  }
+}
